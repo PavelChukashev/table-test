@@ -1,20 +1,14 @@
 import React, { useMemo } from 'react'
-import { useTable, useGlobalFilter, useFilters } from 'react-table'
+import { useTable } from 'react-table'
 import MOCK_DATA from './MOCK_DATA.json'
 import { COLUMNS } from './columns'
+import { Checkbox } from './Checkbox'
 import './table.css'
-import { GlobalFilter } from './GlobalFilter'
-import { ColumnFilter } from './ColumnFilter'
 
-export const FilteringTable = () => {
+export const ColumnHiding = () => {
 
     const columns = useMemo(() => COLUMNS, [])
     const data = useMemo(() => MOCK_DATA, [])
-    const defaultColumn = useMemo(() => {
-        return {
-            Filter: ColumnFilter
-        }
-    }, [])
 
     const {
         getTableProps,
@@ -22,32 +16,37 @@ export const FilteringTable = () => {
         headerGroups,
         footerGroups,
         rows,
-        state,
-        setGlobalFilter,
-        prepareRow
+        prepareRow,
+        getToggleHideAllColumnsProps,
+        allColumns,
     } = useTable({
         columns: columns,
-        data: data,
-        defaultColumn
-    }, 
-    useFilters,
-    useGlobalFilter
-    )
-
-    const { globalFilter } = state
+        data: data
+    })
 
     return (
         <>
-        <GlobalFilter filter = {globalFilter} setFilter = {setGlobalFilter} />
+        <div>
+            <div>
+                <Checkbox {...getToggleHideAllColumnsProps}/> Toggle all
+            </div>
+            {
+                allColumns.map(column => (
+                    <div key={column.id}>
+                        <label>
+                            <input type='checkbox' {...column.getToggleHiddenProps()} />
+                            {column.Header}
+                        </label>
+                    </div>
+                ))
+            }
+        </div>
         <table {...getTableBodyProps()}>
             <thead>
                 {headerGroups.map((headerGroup) => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
                         {headerGroup.headers.map(column => (
-                            <th {...column.getHeaderProps()}>
-                                {column.render('Header')}
-                                <div>{column.canFilter ? column.render('Filter') : null}</div>
-                            </th>
+                            <th {...column.getHeaderProps()}>{column.render('Header')}</th>
                         ))}
                     </tr>
                 ))}

@@ -1,20 +1,13 @@
 import React, { useMemo } from 'react'
-import { useTable, useGlobalFilter, useFilters } from 'react-table'
+import { useTable } from 'react-table'
 import MOCK_DATA from './MOCK_DATA.json'
 import { COLUMNS } from './columns'
 import './table.css'
-import { GlobalFilter } from './GlobalFilter'
-import { ColumnFilter } from './ColumnFilter'
 
-export const FilteringTable = () => {
+export const RowSelection = () => {
 
     const columns = useMemo(() => COLUMNS, [])
     const data = useMemo(() => MOCK_DATA, [])
-    const defaultColumn = useMemo(() => {
-        return {
-            Filter: ColumnFilter
-        }
-    }, [])
 
     const {
         getTableProps,
@@ -22,38 +15,27 @@ export const FilteringTable = () => {
         headerGroups,
         footerGroups,
         rows,
-        state,
-        setGlobalFilter,
         prepareRow
     } = useTable({
         columns: columns,
-        data: data,
-        defaultColumn
-    }, 
-    useFilters,
-    useGlobalFilter
-    )
+        data: data
+    })
 
-    const { globalFilter } = state
+    const firstPageRows = rows.slice(0, 10)
 
     return (
-        <>
-        <GlobalFilter filter = {globalFilter} setFilter = {setGlobalFilter} />
         <table {...getTableBodyProps()}>
             <thead>
                 {headerGroups.map((headerGroup) => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
                         {headerGroup.headers.map(column => (
-                            <th {...column.getHeaderProps()}>
-                                {column.render('Header')}
-                                <div>{column.canFilter ? column.render('Filter') : null}</div>
-                            </th>
+                            <th {...column.getHeaderProps()}>{column.render('Header')}</th>
                         ))}
                     </tr>
                 ))}
             </thead>
             <tbody {...getTableBodyProps()}>
-                {rows.map( (row) => {
+                {firstPageRows.map( (row) => {
                     prepareRow(row)
                     return (
                         <tr {...row.getRowProps}>
@@ -80,6 +62,5 @@ export const FilteringTable = () => {
                 }
             </tfoot>
         </table>
-        </>
     )
 }

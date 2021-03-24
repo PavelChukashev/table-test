@@ -1,20 +1,13 @@
 import React, { useMemo } from 'react'
-import { useTable, useGlobalFilter, useFilters } from 'react-table'
+import { useTable, useColumnOrder } from 'react-table'
 import MOCK_DATA from './MOCK_DATA.json'
 import { COLUMNS } from './columns'
 import './table.css'
-import { GlobalFilter } from './GlobalFilter'
-import { ColumnFilter } from './ColumnFilter'
 
-export const FilteringTable = () => {
+export const ColumnOrder = () => {
 
     const columns = useMemo(() => COLUMNS, [])
     const data = useMemo(() => MOCK_DATA, [])
-    const defaultColumn = useMemo(() => {
-        return {
-            Filter: ColumnFilter
-        }
-    }, [])
 
     const {
         getTableProps,
@@ -22,32 +15,28 @@ export const FilteringTable = () => {
         headerGroups,
         footerGroups,
         rows,
-        state,
-        setGlobalFilter,
-        prepareRow
+        prepareRow,
+        setColumnOrder
     } = useTable({
         columns: columns,
-        data: data,
-        defaultColumn
-    }, 
-    useFilters,
-    useGlobalFilter
+        data: data
+    },
+        useColumnOrder
     )
 
-    const { globalFilter } = state
+    const changeOrder = () => {
+        setColumnOrder(['id', 'first_name', 'last_name', 'country', 'age', 'gender'])
+    }
 
     return (
         <>
-        <GlobalFilter filter = {globalFilter} setFilter = {setGlobalFilter} />
+        <button onClick={changeOrder}>Change column order</button>
         <table {...getTableBodyProps()}>
             <thead>
                 {headerGroups.map((headerGroup) => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
                         {headerGroup.headers.map(column => (
-                            <th {...column.getHeaderProps()}>
-                                {column.render('Header')}
-                                <div>{column.canFilter ? column.render('Filter') : null}</div>
-                            </th>
+                            <th {...column.getHeaderProps()}>{column.render('Header')}</th>
                         ))}
                     </tr>
                 ))}

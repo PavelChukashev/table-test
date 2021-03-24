@@ -1,10 +1,10 @@
 import './App.css';
-import { FilteringTable } from './components/FilteringTable'
+import { ColumnHiding } from './components/ColumnHiding';
 
 function App() {
   return (
     <div className="App">
-      <FilteringTable />
+      <ColumnHiding />
     </div>
   );
 }
