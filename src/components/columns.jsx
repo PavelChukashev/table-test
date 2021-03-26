@@ -5,32 +5,40 @@ export const COLUMNS = [
         Header: 'Id',
         Footer: 'Id',
         accessor: 'id',
-        disableFilters: true
+        disableFilters: true,
+        sticky: 'left'
     },
     {
         Header: 'First Name',
         Footer: 'First Name',
-        accessor: 'first_name'
+        accessor: 'first_name',
+        Filter: ColumnFilter,
+        sticky: 'left'
     },
     {
         Header: 'Last Name',
         Footer: 'Last Name',
-        accessor: 'last_name'
+        accessor: 'last_name',
+        Filter: ColumnFilter,
+        sticky: 'left'
     },
     {
         Header: 'Age',
         Footer: 'Age',
-        accessor: 'age'
+        accessor: 'age',
+        Filter: ColumnFilter,
     },
     {
         Header: 'Gender',
         Footer: 'Gender',
-        accessor: 'gender'
+        accessor: 'gender',
+        Filter: ColumnFilter,
     },
     {
         Header: 'Country',
         Footer: 'Country',
-        accessor: 'country'
+        accessor: 'country',
+        Filter: ColumnFilter,
     },
 ]
 

@@ -28,7 +28,7 @@ export const ColumnHiding = () => {
         <>
         <div>
             <div>
-                <Checkbox {...getToggleHideAllColumnsProps}/> Toggle all
+                <Checkbox {...getToggleHideAllColumnsProps()}/> Toggle all
             </div>
             {
                 allColumns.map(column => (
